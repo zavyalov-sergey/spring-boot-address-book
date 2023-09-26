@@ -17,7 +17,7 @@ public class AccessLevel {
     @Column(name = "access_level_name")
     private String accessLevelName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accessLevel")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<User> users;
 
     public AccessLevel() {

@@ -3,6 +3,9 @@ package com.zavyalov.spring_boot.spring_boot_address_book.model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -10,6 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int userId;
 
     @Column(name = "user_name")
@@ -19,41 +23,32 @@ public class User {
     private String userSurname;
 
     @Column(name = "user_email")
-    private String userEmail;     //create Email class
+    private String userEmail;
 
     @Column(name = "user_phone")
-    private String userPhone;      //create phone class or RegEx
+    private String userPhone;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "access_level_id")
     private AccessLevel accessLevel;
 
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp createdAt;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Contact> contacts;
 
     public User() {
     }
 
-    public User(String userName, String userSurname, String userEmail, String userPhone, AccessLevel accessLevel, Timestamp createdAt) {
+    public User(String userName
+            , String userSurname
+            , String userEmail
+            , String userPhone
+            ) {
         this.userName = userName;
         this.userSurname = userSurname;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
-        this.accessLevel = accessLevel;
-        this.createdAt = createdAt;
-    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", userSurname='" + userSurname + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userPhone='" + userPhone + '\'' +
-                ", accessLevel='" + accessLevel + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
     }
 
     public int getUserId() {
@@ -104,11 +99,5 @@ public class User {
         this.accessLevel = accessLevel;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
 }
